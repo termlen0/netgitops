@@ -1,0 +1,66 @@
+---
+language: python
+python: "2.7"
+
+# Use the new container infrastructure
+sudo: false
+
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
+
+branches:
+  except:
+  - master
+
+install:
+  # Install requirements
+  - pip install -r requirements.txt
+
+env:
+  global:
+    - EC2_INSTANCE_FILTERS="tag:project=${TRAVIS_PULL_REQUEST_BRANCH}-${TRAVIS_PULL_REQUEST}"
+    - SSH_KEY_FILE="${TRAVIS_PULL_REQUEST_BRANCH}-${TRAVIS_PULL_REQUEST}/${TRAVIS_PULL_REQUEST_BRANCH}-${TRAVIS_PULL_REQUEST}-private.pem"
+
+before_script:
+  - cd tests
+script:
+  - git clone https://github.com/termlen0/demo provisioner
+
+  - |
+    ansible-playbook provisioner/provision.yaml \
+    -e env="${TRAVIS_BRANCH}" \
+    -e chg_num="${TRAVIS_PULL_REQUEST_BRANCH}" \
+    -e user_id="${TRAVIS_PULL_REQUEST}"
+
+  # - sed -i -e "s/DEMO-PROD/${TRAVIS_PULL_REQUEST_BRANCH}\-${TRAVIS_PULL_REQUEST}/" test-inventory/ec2.ini
+  # - sed -i -e "s/DEMO-PROD/${TRAVIS_PULL_REQUEST_BRANCH}\-${TRAVIS_PULL_REQUEST}/g" test-inventory/hosts.yaml
+  # - sed -i -e "s/DEMO_PROD/${TRAVIS_PULL_REQUEST_BRANCH}_${TRAVIS_PULL_REQUEST}/g" test-inventory/hosts.yaml
+  # - sed -i -e "s/demo_prod/${TRAVIS_PULL_REQUEST_BRANCH}_${TRAVIS_PULL_REQUEST}/g" test-inventory/hosts.yaml
+
+
+
+  - ansible-playbook -i inventory ../deploy.yaml
+
+  - |
+    ansible-playbook -i inventory main.yaml \
+      -e env="${TRAVIS_BRANCH}" \
+      -e chg_num="${TRAVIS_PULL_REQUEST_BRANCH}" \
+      -e user_id="${TRAVIS_PULL_REQUEST}" \
+      -e pipeline="${TRAVIS_BRANCH}"
+
+after_script:
+  - |
+    ansible-playbook  provisioner/teardown.yaml \
+    -e env="${TRAVIS_BRANCH}" \
+    -e chg_num="${TRAVIS_PULL_REQUEST_BRANCH}" \
+    -e user_id="${TRAVIS_PULL_REQUEST}"
+
+
+notifications:
+  slack: ansiblenetwork:2Uk0RH2K4b27t7CygzabYG5S
+
+# notifications:
+#   webhooks: https://galaxy.ansible.com/api/v1/notifications/
