@@ -59,8 +59,6 @@ after_script:
     -e user_id="${TRAVIS_PULL_REQUEST}"
 
 
-notifications:
-  slack: ansiblenetwork:2Uk0RH2K4b27t7CygzabYG5S
 
 # notifications:
 #   webhooks: https://galaxy.ansible.com/api/v1/notifications/
