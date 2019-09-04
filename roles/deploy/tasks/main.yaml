@@ -1,0 +1,9 @@
+- name: ENSURE THAT REMOTE ROUTERS HAVE NECESSARY CONFIGURATIONS
+  ios_config:
+    src: render_remote.j2
+  when: "'remote' in inventory_hostname"
+
+- name: ENSURE THAT CORE ROUTERS HAVE NECESSARY CONFIGURATIONS
+  ios_config:
+    src: render_core.j2
+  when: "'core' in inventory_hostname"

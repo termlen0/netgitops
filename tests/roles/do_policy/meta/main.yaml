@@ -1,0 +1,14 @@
+---
+## Add dependencies here if you plan to expand/disaggregate with multiple policies
+## use do_policy_XXXX for naming.
+dependencies: []
+
+galaxy_info:
+  role_name: do_policy
+  author: "Victor da Costa (@victorock)"
+  description: "Do policy enforcement for values defined in the datamodel"
+  company: "Ansible"
+  license: GPLv3
+  min_ansible_version: 2.6
+  platforms: []
+  galaxy_tags: []

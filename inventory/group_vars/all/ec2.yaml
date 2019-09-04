@@ -1,0 +1,20 @@
+ec2_name_prefix: "{{ chg_num }}-{{ user_id }}"
+ec2_region: us-east-1
+ec2_wait: yes
+
+ec2_instance_types:
+  csr-byol:
+    owners: 679593333241
+    size: t2.medium
+    os_type: linux
+    disk_space: 20
+    architecture: x86_64
+    filter: "cisco-CSR*BYOL*"
+    os: ios
+  rhel7:
+    owners: 309956199498
+    size: t2.micro
+    os_type: linux
+    disk_space: 10
+    architecture: x86_64
+    filter: 'RHEL-7.4*GA*'

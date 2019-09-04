@@ -1,0 +1,41 @@
+- name: "Validate neighbors session state"
+  ios_command:
+    commands: "show ip bgp neighbors {{ neighbor.peer_ip }}"
+    wait_for:
+      - result[0] contains 'Established, up'
+    interval: 10
+  loop: "{{ neighbors }}"
+  loop_control:
+    loop_var: neighbor
+    label: "neighbor {{ neighbor.peer_ip }}"
+  when: 'pipeline == "full"'
+
+
+- name: "Validate advertised networks by neighbors"
+  ios_command:
+    commands:
+      - show ip bgp neighbors {{ network.0.peer_ip }} advertised-routes
+    wait_for:
+      - result[0] contains '{{ network.1.net }}'
+    interval: 10
+  with_subelements:
+    - "{{ neighbors }}"
+    - advertised_networks
+    - skip_missing: true
+  loop_control:
+    loop_var: network
+    label: "network {{ network.1.net }}"
+  when: 'pipeline == "full"'
+
+- name: "Validate entries for bgp networks in route table"
+  ios_command:
+    commands:
+      - show ip route
+    wait_for:
+      - result[0] contains '{{ network.1.net }}'
+  with_subelements:
+    - "{{ neighbors }}"
+    - advertised_networks
+  loop_control:
+    loop_var: network
+    label: "network {{ network.1.net }}"

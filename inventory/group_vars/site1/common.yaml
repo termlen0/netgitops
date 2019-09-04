@@ -1,0 +1,11 @@
+site: 1
+snmp:
+  ro:
+    - Site1-Snmpro
+    - Ansible123Pass
+  rw:
+    - site1-AnsibleFest2018
+  contact:
+    - site1-netops
+
+ospf_area: 0.0.0.0

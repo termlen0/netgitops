@@ -1,0 +1,3 @@
+tunnel_network: 10.100.101.0/30
+mtu: 1476
+mss: 1360

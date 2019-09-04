@@ -1,0 +1,7 @@
+- name: TESTS FOR THE FULL TOPOLOGY
+  hosts: all
+  connection: network_cli
+  gather_facts: no
+
+  roles:
+    - ping_tests

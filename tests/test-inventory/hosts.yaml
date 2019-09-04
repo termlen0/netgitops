@@ -1,0 +1,21 @@
+all:
+  hosts:
+    localhost:
+
+  children:
+    site1:
+      children:
+        tag_location_site1:
+
+    site2:
+      children:
+        tag_location_site2:
+
+
+    demo_prod:
+      children:
+        tag_project_DEMO_PROD:
+      vars:
+        ansible_network_os: ios
+        ansible_ssh_user: ec2-user
+        ansible_ssh_private_key_file: DEMO-PROD/DEMO-PROD-private.pem

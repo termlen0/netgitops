@@ -1,0 +1,8 @@
+- name: "Run tests"
+  hosts: site2
+  connection: network_cli
+  gather_facts: no
+  roles:
+    - do_policy
+    - ios_ospfv2
+    - ios_bgp

@@ -1,0 +1,8 @@
+---
+## Running this with 2 tasks, one for find and another for shell has poor performance.
+- name: Run ansible-lint on yaml files
+  shell: >
+    find * -name "*.yml" -or -name "*.yaml" | xargs ansible-review -q
+  changed_when: true
+  args:
+    chdir: "{{ do_ansible_review_folder }}"

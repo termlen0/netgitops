@@ -1,0 +1,10 @@
+- name: "Validate entries for ospf networks in route table"
+  ios_command:
+    commands:
+      - show ip route
+    wait_for:
+      - result[0] contains '{{ network.net }}'
+  loop: "{{ networks }}"
+  loop_control:
+    loop_var: network
+    label: "network {{ network.net }}"

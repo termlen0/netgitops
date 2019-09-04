@@ -1,0 +1,4 @@
+# Series of ping tests
+
+- name: IMPORT TESTING OF REMOTE1 LOOPBACKS
+  import_tasks: remote1_loopbacks.yaml

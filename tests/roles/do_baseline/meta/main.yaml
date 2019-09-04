@@ -1,0 +1,16 @@
+---
+dependencies:
+  - role: do_ansible_review
+    do_ansible_review_folder: "{{ playbook_dir }}/../"
+  - role: do_ansible_lint
+    do_ansible_lint: "{{ playbook_dir }}/../"
+
+galaxy_info:
+  role_name: pipeline_test
+  author: "Victor da Costa (@victorock)"
+  description: "Do Test tasks"
+  company: "Ansible"
+  license: GPLv3
+  min_ansible_version: 2.6
+  platforms: []
+  galaxy_tags: []

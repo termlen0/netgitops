@@ -1,0 +1,3 @@
+- name: "policy: snmp.yaml"
+  include_tasks: "snmp.yaml"
+  when: snmp is defined

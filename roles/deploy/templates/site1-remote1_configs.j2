@@ -1,0 +1,13 @@
+
+router ospf {{process_id}}
+{% for network in networks %}
+  network {{ network.net }} {{ network.wc }} area {{ ospf_area }}
+{% endfor %}
+
+
+{% for intf_id, properties in loopback.items() %}
+interface Loopback{{ intf_id }}
+ description {{ properties.desc }}
+ ip address {{ properties.net | ipaddr('network') }} {{ properties.net | ipaddr('netmask') }}
+ ip ospf network point-to-point
+{% endfor %}

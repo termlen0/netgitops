@@ -1,0 +1,11 @@
+loopback:
+  0:
+    desc: INTERNAL INTERFACE LOOPBACK0
+    net: "{{ circuit.2.network }}"
+  1:
+    desc: INTERNAL INTERFACE LOOPBACK1
+    net: "{{ circuit.3.network }}"
+
+  2:
+    desc: INTERNAL INTERFACE LOOPBACK2
+    net: "{{ circuit.8.network }}"

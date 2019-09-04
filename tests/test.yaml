@@ -1,0 +1,11 @@
+#!/usr/bin/env ansible-playbook
+- name: "Trigger the tests"
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  become: no
+
+  tasks:
+    - name: "do_baseline"
+      include_role:
+        name: do_baseline

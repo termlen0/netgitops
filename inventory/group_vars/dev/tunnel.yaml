@@ -1,0 +1,13 @@
+mtu: 1476
+mss: 1360
+
+
+
+site1:
+  tunnel_network: 10.100.100.0/30
+
+site2:
+  tunnel_network: 10.100.101.0/30
+
+backbone:
+  tunnel_network: 10.200.200.0/30

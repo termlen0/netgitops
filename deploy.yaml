@@ -1,0 +1,7 @@
+---
+- name: "Deploy Configuration"
+  hosts: all
+  connection: network_cli
+  gather_facts: no
+  roles:
+    - deploy

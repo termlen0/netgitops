@@ -1,0 +1,1 @@
+- include: "pipelines/{{ pipeline | default('full') }}/main.yaml"

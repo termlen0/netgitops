@@ -1,0 +1,18 @@
+local_as: 65501
+router_id: 1.1.1.1
+neighbors:
+  - peer_ip: 10.200.200.2
+    peer_as: 65502
+    advertised_networks:
+      - net: "{{ loopback.0.net | ipaddr('network') }}"
+        mask: "{{ loopback.0.net | ipaddr('netmask') }}"
+      - net: "{{ loopback.1.net | ipaddr('network') }}"
+        mask: "{{ loopback.1.net | ipaddr('netmask') }}"
+      - net: "{{ tunnel_network | ipaddr('network') }}"
+        mask: "{{ tunnel_network | ipaddr('netmask') }}"
+      - net: "10.1.2.0"
+        mask: "255.255.255.0"
+      - net: "192.168.2.0"
+        mask: "255.255.255.0"
+      - net: "192.168.3.0"
+        mask: "255.255.255.0"

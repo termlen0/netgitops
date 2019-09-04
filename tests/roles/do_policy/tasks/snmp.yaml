@@ -1,0 +1,59 @@
+---
+# Use delegate_to so assert run at localhost
+# Use no_log: yes so information is not leaked in logs.
+## POLICYXYZ
+- name: "POLICYXYZ: Validates that list of read-only and read-write communities are defined"
+  delegate_to: localhost
+  assert:
+    that:
+      - snmp.ro is defined
+      - snmp.ro is iterable
+      - snmp.rw is defined
+      - snmp.rw is iterable
+
+## POLICYXYZ.123
+- name: "POLICYXYZ.123: Validates that the same community is not defined for both read-only and read-write."
+  delegate_to: localhost
+  no_log: yes
+  assert:
+    that:
+      - snmp_ro_community not in snmp.rw
+  loop: "{{ snmp.ro }}"
+  loop_control:
+    loop_var: snmp_ro_community
+
+## POLICYXYZ.123MW
+- name: "POLICYXYZ.123MW: Validates strenght of read-only communities"
+  delegate_to: localhost
+  no_log: yes
+  assert:
+    that:
+      # At least 10 characters long
+      - snmp_ro_community is match('(?=.{10,}).*')
+      # At least one lower-case
+      - snmp_ro_community is match('(?=.*[a-z]).*')
+      # At least one digit
+      - snmp_ro_community is match('(?=.*[0-9]).*')
+      # At least one upper-case
+      - snmp_ro_community is match('(?=.*[A-Z]).*')
+  loop: "{{ snmp.ro }}"
+  loop_control:
+    loop_var: snmp_ro_community
+
+## POLICYXYZ.123MWBLA
+- name: "POLICYXYZ.123MWBLA: Validates strenght of read-write communities"
+  delegate_to: localhost
+  no_log: yes
+  assert:
+    that:
+      # At least 10 characters long
+      - snmp_rw_community is match('(?=.{15,}).*')
+      # At least one lower-case
+      - snmp_rw_community is match('(?=.*[a-z]).*')
+      # At least one digit
+      - snmp_rw_community is match('(?=.*[0-9]).*')
+      # At least one upper-case
+      - snmp_rw_community is match('(?=.*[A-Z]).*')
+  loop: "{{ snmp.rw }}"
+  loop_control:
+    loop_var: snmp_rw_community

@@ -1,0 +1,33 @@
+hostname rtr{{site}}{{site}}
+
+
+router ospf {{process_id}}
+{% for network in networks %}
+  network {{ network.net }} {{ network.wc }} area {{ ospf_area }}
+{% endfor %}
+
+
+interface tunnel0
+ bfd interval 50 min_rx 50 multiplier 5 
+ ip ospf bfd
+
+
+{% for intf_id, properties in loopback.items() %}
+interface Loopback{{ intf_id }}
+ description {{ properties.desc }}
+ ip address {{ properties.net | ipaddr('1') | ipaddr('address') }} {{ properties.net | ipaddr('netmask') }}
+ ip ospf network point-to-point
+{% endfor %}
+
+
+{% for snmp_type, properties in snmp.items() %}
+{% if snmp_type == 'ro' or snmp_type == 'rw' %}
+{% for property in properties %}
+snmp-server community {{ property }} {{ snmp_type }}
+{% endfor %}
+{% elif snmp_type == 'contact' %}
+{% for property in properties %}
+snmp-server contact {{ property }}
+{% endfor %}
+{% endif %}
+{% endfor %}

@@ -1,0 +1,50 @@
+hostname rtr{{ site }}
+
+router ospf {{ process_id }}
+ redistribute bgp {{ local_as }} subnets
+{% for network in networks %}
+ network {{ network.net }} {{ network.wc }} area {{ ospf_area }}
+{% endfor %}
+
+interface tunnel0
+ bfd interval 50 min_rx 50 multiplier 5 
+ ip ospf bfd
+
+interface tunnel1
+ bfd interval 50 min_rx 50 multiplier 5 
+
+{% for intf_id, properties in loopback.items() %}
+interface Loopback{{ intf_id }}
+ description {{ properties.desc }}
+ ip address {{ properties.net | ipaddr('1') | ipaddr('address') }} {{ properties.net | ipaddr('netmask') }}
+ ip ospf network point-to-point
+{% endfor %}
+
+
+
+{% for snmp_type, properties in snmp.items() %}
+{% if snmp_type == 'ro' or snmp_type == 'rw' %}
+{% for property in properties %}
+snmp-server community {{ property }} {{ snmp_type }}
+{% endfor %}
+{% elif snmp_type == 'contact' %}
+{% for property in properties %}
+snmp-server contact {{ property }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+
+router bgp {{ local_as }}
+ bgp router-id {{ router_id }}
+ bgp log-neighbor-changes
+{% for neighbor in neighbors %}
+ neighbor {{ neighbor.peer_ip }} remote-as {{ neighbor.peer_as }}
+ neighbor {{ neighbor.peer_ip }} fall-over bfd
+ address-family ipv4
+{% for network in neighbor.advertised_networks %}
+  network {{ network.net }} mask {{ network.mask }}
+{% endfor %}
+  neighbor {{ neighbor.peer_ip }} activate
+ exit-address-family
+{% endfor %}

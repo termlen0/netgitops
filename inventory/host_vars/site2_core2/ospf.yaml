@@ -1,0 +1,8 @@
+process_id: 1
+networks:
+  - net: "{{ loopback.0.net | ipaddr('network') }}"
+    wc: "{{ loopback.0.net | ipaddr('hostmask') }}"
+  - net: "{{ loopback.1.net | ipaddr('network') }}"
+    wc: "{{ loopback.1.net | ipaddr('hostmask') }}"
+  - net: "{{ tunnel_network | ipaddr('network') }}"
+    wc: "{{ tunnel_network | ipaddr('hostmask') }}"

@@ -1,0 +1,13 @@
+- name: COLLECT LOOPBACKS FOR REMOTE1
+  set_fact:
+    loopback_ips: "{{ loopback_ips | default([]) + [(item.value.left_ip)] }}"
+  with_dict: "{{ hostvars['site1_remote1']['circuit'] }}"
+  when: "item.value.left_device == 'site1_remote1'"
+
+- name: PING ALL THE REMOTE1 LOOPBACK INTERFACES
+  ios_ping:
+    dest: "{{ ip_address }}"
+  loop:
+    - "{{ loopback_ips }}"
+  loop_control:
+    loop_var: ip_address

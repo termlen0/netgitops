@@ -1,0 +1,9 @@
+ansible==2.6.3
+ansible-tower-cli==3.3.0
+ansible-lint>=3.4.23
+ansible-review>=0.13.7
+ipaddress>=1.0.19
+boto>=2.48.0
+boto3>=1.6.9
+botocore
+netaddr

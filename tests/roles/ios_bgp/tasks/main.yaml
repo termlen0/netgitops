@@ -1,0 +1,5 @@
+- name: "ios_bgp: run.yaml"
+  include_tasks: run.yaml
+  when:
+    - neighbors is defined
+    - neighbors is iterable
